@@ -1,0 +1,56 @@
+(* Basic Elements *)
+nonDoubleQuote = ? any character except double quote ? ;
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+lowercase = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" ;
+uppercase = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z" ;
+letter = lowercase | uppercase ;
+
+(* Types *)
+BoolType = "bool" ;
+StringType = "string" ;
+FloatType = "float" | "float32" | "float64" ;
+IntType = "int" | "int8" | "int16" | "int32" | "int64" ;
+UintType = "uint" | "uint8" | "uint16" | "uint32" | "uint64" ;
+ComplexType = "enum" | "array" | "struct" | "function" ;
+Type = BoolType | StringType | FloatType | IntType | UintType | ComplexType ;
+
+(* Values *)
+BoolValue = "true" | "false" ;
+IntValue = digit , { digit } ;
+FloatValue = digit , { digit } , "." , digit , { digit } ;
+EnumValue = Identifier , "." , Identifier ;
+ArrayValue = "[" , Type , "]" ;
+StructValue = "struct" , "{" , { Identifier , ":", Type , ";" } , "}" ;
+FunctionDefinition = "fn" , "(" , [ { Type , Identifier , "," } ] , ")" , Block ;
+ArrowFunction = "(" , [ { Type , Identifier , "," } ] , ")" , "=>" , Block ;
+FunctionValue = FunctionDefinition | ArrowFunction ;
+Value = BoolValue | IntValue | FloatValue | EnumValue | ArrayValue | StructValue | FunctionValue ;
+
+(* Statements and Expressions *)
+Block = "{" , { Statement } , "}" ;
+Identifier = letter , { letter | digit | "_" } ;
+VariableAssignment = "let" , Identifier , ":" , Type , [ "=" , Value ] 
+           | "let" , Identifier , "=" , Value 
+           | Identifier , ":=" , Value ;
+ConstAssignment = "const" , Identifier , [ ":" , Type ] , "=" , Value ;
+Expression = Term , { ("+" , Term) | ("-" , Term) } ;
+Term = Factor , { ("*" , Factor) | ("/" , Factor) } ;
+Factor = Number | Identifier | "(" , Expression , ")" ;
+Statement = Identifier , "=" , Expression , ";" ;
+Program = { Statement } ;
+
+(* Operators *)
+Plus = "+" ;
+Minus = "-" ;
+Equal = "=" ;
+Comma = "," ;
+Colon = ":" ;
+Divide = "/" ;
+Multiply = "*" ;
+NotEqual = "!=" ;
+OpenParen = "(" ;
+CloseParen = ")" ;
+Semicolon = ";" ;
+Number = digit , { digit } ;
+String = '"' , { nonDoubleQuote } , '"' ;
+Whitespace = { " " | "\t" | "\n" | "\r" } ;
